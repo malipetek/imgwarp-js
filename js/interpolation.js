@@ -49,7 +49,7 @@ ImgWarper.BilinearInterpolation.prototype.fill =
         this.imgTargetData.data[index] = 255;
         this.imgTargetData.data[index + 1] = 255;
         this.imgTargetData.data[index + 2] = 255;
-        this.imgTargetData.data[index + 3] = 255;
+        this.imgTargetData.data[index + 3] = 0;
         continue;
       }
       var srcX1 = Math.floor(srcX);
