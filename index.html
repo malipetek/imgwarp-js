@@ -1,92 +1,69 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Image Warp - JS</title>
-<style>
-#file-holder {
-  border: 5px dashed #ccc; 
-  width: 300px; 
-  height: 50px; 
-  text-align: center;
-  display: table-cell;
-  vertical-align: middle;
-  font-size: 20px;
-  color: #777;
-  margin: 0 auto;
-}
-#holder-holder {
-  padding: 20px;
-  display: table;
-}
-#sample-images .img-thumbnail {
-  max-width: 120px;
-  max-height: 120px;
-}
-#file-holder.hover { border: 10px dashed #333; }
-#main-canvas {
-  padding: 20px auto;
-  border: 2px dashed #aaa;
-}
-#drop-area {
-  width: 80%;
-  /*border: 2px dashed #aaa;*/
-  padding: 0 30px;
-  margin: 20px 0;
-}
-</style>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript" src="./js/point.js"></script> 
-<script type="text/javascript" src="./js/matrix22.js"></script>  
-<script type="text/javascript" src="./js/deformation.js"></script>
-<script type="text/javascript" src="./js/interpolation.js"></script>  
-<script type="text/javascript" src="./js/point_definer.js"></script> 
-<script type="text/javascript" src="./js/main.js"></script> 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<!-- Optional theme -->
-<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-<!-- Latest compiled and minified JavaScript -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<body>
-<div class="" style="max-width: 1000px; margin: 0 auto;">
-  <h2>Warp Image - JS version</h2>
-  <div class="row">
-    <div class="col-md-5">
-      <h4>Step 1: Drag an image (from below or from disk) to the right.</h4>
-      <div id="sample-images">
-        <img src="images/hair.png" draggable="true" class="allow-drag img-thumbnail"/>
-        <img src="images/male200.png" draggable="true" class="allow-drag img-thumbnail"/>
-        <img src="images/tux.jpg" draggable="true" class="allow-drag img-thumbnail"/>
-        <img src="images/gmail.png" draggable="true" class="allow-drag img-thumbnail"/>
-        <img src="images/trunk.jpg" draggable="true" class="allow-drag img-thumbnail"/>
-        <img src="images/haha.jpg" draggable="true" class="allow-drag img-thumbnail"/>
-      </div>
-      <!--<div id="holder-holder">-->
-        <!--<div id="file-holder"><span>Drag an image here.</span></div> -->
-      <!--</div>-->
-      <div>
-        <h4>Step 2: Add at least 3 points and drag.  </h4>
-        <dl>
-          <dt>Ctrl+Click</dt> <dd>Add control point.</dd>
-          <dt>Shift+Click</dt> <dd>Remove control point.</dd>
-          <dt>Drag</dt> <dd>Warp.</dd>
-        </dl>
-      </div>
-    </div>
-    <div class="col-md-7">
-      <div id="drop-area">
-        <canvas id="main-canvas" width="400" height="300">  </canvas>
-      </div>
-      <label><input type="CHECKBOX" name="show-grid" class="redraw" id="show-grid"/> Show Grid</label>
-      <label><input type="CHECKBOX" name="show-control" class="redraw" id="show-control" checked/> Show Control Points</label>
-      <div id="fps"></div>
-    </div>
-    <canvas id="myCanvas" style="display:none;"> </canvas>
-  </div>
-  <footer>
-    <p>Note: The page is significantly faster in Chrome than Firefox.</p>
-    More info: <a href="https://github.com/cxcxcxcx/imgwarp-js/">GitHub page</a>.
-  </footer>
-</div>
-</body>
-</html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<style>
+  body {
+    background-color: cornflowerblue;
+  }
+  body *{
+    float: left;
+  }
+  .plate {
+    padding: 10px;
+    margin: 10px;
+    background: #ccc;
+    border-radius: 5px;
+  }
+  canvas {
+    /* background-color: coral; */
+    border: 1px solid #444;
+  }
+</style>
+
+<body>
+  <canvas id="f"></canvas>
+  <div class="plate">
+    <p> 
+      Double click to enter edit mode 
+      <br>
+      Ctrl + click to add a warp point
+      <br>
+      Shift + click to remove a warp point 
+    </p>
+    <button type="button" onclick="fcanvas._objects[0].setSrc(['./images/128.png', './images/img.png', './images/checker.png'][Math.floor(Math.random() * 3)], ()=>{ fcanvas.renderAll(); document.querySelector('.notify').style.display = 'block'; setTimeout(()=> document.querySelector('.notify').style.display = 'none', 1000); })"> Change Image </button>
+    <div class="notify" style="display: none"> Changed </div>
+  </div>
+</body>
+
+<script src="./includes/fabric.js"></script>
+<script src="./includes/warper.js"></script>
+<script src="./fabric-warp-image.js"></script>
+
+<script>
+  var img = new Image();
+  img.onload = () => {
+    var fcanvas = new fabric.Canvas('f', {
+      backgroundColor: '#777',
+      width: 600,
+      height: 600,
+      perPixelTargetFind: true
+    });
+    window.fcanvas = fcanvas;
+
+    window.warpImage = new fabric.WarpImage(img, {fixedPoints: 8});
+
+    fcanvas.add(warpImage);
+    fcanvas.renderAll();
+
+  }
+  img.src = "./images/img.png"
+
+</script>
+
+</html>
